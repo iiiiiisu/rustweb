@@ -1,6 +1,6 @@
-use super::http;
-use super::http::status;
-use super::http::Request;
+use crate::pkg::http;
+use crate::pkg::http::status;
+use crate::pkg::http::Request;
 use std::fs;
 use std::thread;
 use std::time::Duration;

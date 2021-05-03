@@ -1,7 +1,7 @@
 extern crate chrono;
-use rustweb::handlers;
-use rustweb::http::Request;
-use rustweb::ThreadPool;
+use rustweb::pkg::http::Request;
+use rustweb::pkg::server::ThreadPool;
+use rustweb::apps::handlers;
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
