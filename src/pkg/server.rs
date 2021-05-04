@@ -14,16 +14,33 @@ pub struct ThreadPool {
     sender: mpsc::Sender<Message>,
 }
 
+#[derive(Debug)]
+pub enum ThreadPoolCreateError {
+    SizeError,
+}
+
+impl std::fmt::Display for ThreadPoolCreateError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self {
+            ThreadPoolCreateError::SizeError => {
+                write!(f, "Size of ThreadPool should be lagger than 0.")
+            }
+        }
+    }
+}
+
 impl ThreadPool {
-    pub fn new(size: usize) -> ThreadPool {
-        assert!(size > 0);
+    pub fn new(size: usize) -> Result<ThreadPool, ThreadPoolCreateError> {
+        if size == 0 {
+            return Err(ThreadPoolCreateError::SizeError);
+        }
         let (sender, receiver) = mpsc::channel();
         let receiver = Arc::new(Mutex::new(receiver));
         let mut workers = Vec::with_capacity(size);
         for id in 0..size {
             workers.push(Worker::new(id, Arc::clone(&receiver)));
         }
-        ThreadPool { workers, sender }
+        Ok(ThreadPool { workers, sender })
     }
 
     pub fn execute<F>(&self, f: F)

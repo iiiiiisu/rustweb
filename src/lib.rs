@@ -1,2 +1,2 @@
-pub mod pkg;
 pub mod apps;
+pub mod pkg;
